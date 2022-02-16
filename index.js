@@ -50,6 +50,7 @@ HtmlWebpackInlineSourcePlugin.prototype.processTags = function (compilation, reg
 };
 
 HtmlWebpackInlineSourcePlugin.prototype.resolveSourceMaps = function (compilation, assetName, asset) {
+  // console.log(compilation, assetName, asset)
   var source = asset.source();
   var out = compilation.outputOptions;
   // Get asset file absolute path
@@ -82,7 +83,6 @@ HtmlWebpackInlineSourcePlugin.prototype.resolveSourceMaps = function (compilatio
 
 HtmlWebpackInlineSourcePlugin.prototype.processTag = function (compilation, regex, tag, filename) {
   var assetUrl;
-  var preTag = tag;
 
   // inline js
   if (tag.tagName === 'script' && tag.attributes && regex.test(tag.attributes.src)) {
@@ -108,19 +108,19 @@ HtmlWebpackInlineSourcePlugin.prototype.processTag = function (compilation, rege
   }
 
   if (assetUrl) {
-    // Strip public URL prefix from asset URL to get Webpack asset name
-    var publicUrlPrefix = compilation.outputOptions.publicPath || '';
-    // if filename is in subfolder, assetUrl should be prepended folder path
-    if (path.basename(filename) !== filename) {
-      assetUrl = path.dirname(filename) + '/' + assetUrl;
-    }
-    var assetName = path.posix.relative(publicUrlPrefix, assetUrl);
-    var asset = getAssetByName(compilation.assets, assetName);
-    if (compilation.assets[assetName] !== undefined) {
+    try {
+      // Strip public URL prefix from asset URL to get Webpack asset name
+      var publicUrlPrefix = compilation.outputOptions.publicPath || '';
+      // if filename is in subfolder, assetUrl should be prepended folder path
+      if (path.basename(filename) !== filename) {
+        assetUrl = path.dirname(filename) + '/' + assetUrl;
+      }
+      var assetName = path.posix.relative(publicUrlPrefix, assetUrl);
+      var asset = getAssetByName(compilation.assets, assetName);
       var updatedSource = this.resolveSourceMaps(compilation, assetName, asset);
       tag.innerHTML = (tag.tagName === 'script') ? updatedSource.replace(/(<)(\/script>)/g, '\\x3C$2') : updatedSource;
-    }else{
-      return preTag;
+    } catch (err) {
+      console.log('There is an warning');
     }
   }
 

@@ -1,8 +1,3 @@
-This plugin is no longer maintained.  Facebook provides a similar plugin:
-
-https://github.com/facebook/create-react-app/blob/edc671eeea6b7d26ac3f1eb2050e50f75cf9ad5d/packages/react-dev-utils/InlineChunkHtmlPlugin.js#L10
-
-
 Inline Source extension for the HTML Webpack Plugin
 ========================================
 [![npm version](https://badge.fury.io/js/html-webpack-inline-source-plugin.svg)](https://badge.fury.io/js/html-webpack-inline-source-plugin) [![Build status](https://travis-ci.org/DustinJackson/html-webpack-inline-source-plugin.svg?branch=master)](https://travis-ci.org/DustinJackson/html-webpack-inline-source-plugin) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
@@ -34,7 +29,7 @@ Add the plugin to your webpack config as follows:
 ```javascript
 plugins: [
   new HtmlWebpackPlugin(),
-  new HtmlWebpackInlineSourcePlugin()
+  new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
 ]  
 ```
 The above configuration will actually do nothing due to the configuration defaults.
@@ -45,7 +40,7 @@ plugins: [
   new HtmlWebpackPlugin({
 		inlineSource: '.(js|css)$' // embed all javascript and css inline
 	}),
-  new HtmlWebpackInlineSourcePlugin()
+  new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
 ]  
 ```
 
